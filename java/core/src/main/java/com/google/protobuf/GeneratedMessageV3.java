@@ -365,10 +365,6 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
     }
   }
   
-  protected static boolean canUseUnsafe() {
-    return UnsafeUtil.hasUnsafeArrayOperations() && UnsafeUtil.hasUnsafeByteBufferOperations();
-  }
-
   protected static IntList emptyIntList() {
     return IntArrayList.emptyList();
   }

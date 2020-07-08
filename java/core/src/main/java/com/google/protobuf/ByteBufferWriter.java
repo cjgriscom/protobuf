@@ -36,9 +36,7 @@ import static java.lang.Math.min;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.nio.channels.WritableByteChannel;
 
 /** Utility class to provide efficient writing of {@link ByteBuffer}s to {@link OutputStream}s. */
 final class ByteBufferWriter {
@@ -143,19 +141,6 @@ final class ByteBufferWriter {
   }
 
   private static boolean writeToChannel(ByteBuffer buffer, OutputStream output) throws IOException {
-    if (CHANNEL_FIELD_OFFSET >= 0 && FILE_OUTPUT_STREAM_CLASS.isInstance(output)) {
-      // Use a channel to write out the ByteBuffer. This will automatically empty the buffer.
-      WritableByteChannel channel = null;
-      try {
-        channel = (WritableByteChannel) UnsafeUtil.getObject(output, CHANNEL_FIELD_OFFSET);
-      } catch (ClassCastException e) {
-        // Absorb.
-      }
-      if (channel != null) {
-        channel.write(buffer);
-        return true;
-      }
-    }
     return false;
   }
 
@@ -168,14 +153,6 @@ final class ByteBufferWriter {
   }
 
   private static long getChannelFieldOffset(Class<?> clazz) {
-    try {
-      if (clazz != null && UnsafeUtil.hasUnsafeArrayOperations()) {
-        Field field = clazz.getDeclaredField("channel");
-        return UnsafeUtil.objectFieldOffset(field);
-      }
-    } catch (Throwable e) {
-      // Absorb
-    }
     return -1;
   }
 }

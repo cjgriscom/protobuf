@@ -95,9 +95,7 @@ class IterableByteBufferInputStream extends InputStream {
       currentArray = currentByteBuffer.array();
       currentArrayOffset = currentByteBuffer.arrayOffset();
     } else {
-      hasArray = false;
-      currentAddress = UnsafeUtil.addressOffset(currentByteBuffer);
-      currentArray = null;
+      throw new UnsupportedOperationException("Direct not supported");
     }
     return true;
   }
@@ -119,9 +117,7 @@ class IterableByteBufferInputStream extends InputStream {
       updateCurrentByteBufferPos(1);
       return result;
     } else {
-      int result = UnsafeUtil.getByte(currentByteBufferPos + currentAddress) & 0xFF;
-      updateCurrentByteBufferPos(1);
-      return result;
+      throw new UnsupportedOperationException("Direct not supported");
     }
   }
 
