@@ -32,6 +32,17 @@ package com.google.protobuf;
 
 import static com.google.protobuf.Internal.checkNotNull;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
 import com.google.protobuf.DescriptorProtos.EnumDescriptorProto;
 import com.google.protobuf.DescriptorProtos.EnumOptions;
@@ -49,17 +60,6 @@ import com.google.protobuf.DescriptorProtos.OneofOptions;
 import com.google.protobuf.DescriptorProtos.ServiceDescriptorProto;
 import com.google.protobuf.DescriptorProtos.ServiceOptions;
 import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.logging.Logger;
 
 /**
  * Contains a collection of classes which describe protocol message types.
@@ -1658,8 +1658,8 @@ public final class Descriptors {
     private final FileDescriptor file;
     private final Descriptor containingType;
     private EnumValueDescriptor[] values;
-    private final WeakHashMap<Integer, WeakReference<EnumValueDescriptor>> unknownValues =
-        new WeakHashMap<Integer, WeakReference<EnumValueDescriptor>>();
+    private final HashMap<Integer, WeakReference<EnumValueDescriptor>> unknownValues =
+        new HashMap<Integer, WeakReference<EnumValueDescriptor>>();
 
     private EnumDescriptor(
         final EnumDescriptorProto proto,
