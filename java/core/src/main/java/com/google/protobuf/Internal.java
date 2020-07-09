@@ -30,10 +30,10 @@
 
 package com.google.protobuf;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
 import java.util.Set;
+
+import org.apache.harmony.niochar.charset.ISO_8859_1;
 
 /**
  * The classes contained within are used internally by the Protocol Buffer library and generated
@@ -55,8 +57,8 @@ public final class Internal {
 
   private Internal() {}
 
-  static final Charset UTF_8 = Charset.forName("UTF-8");
-  static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+  static final Charset UTF_8 = StandardCharsets.UTF_8;
+  static final Charset ISO_8859_1 = new ISO_8859_1("ISO_8859_1", new String[0]);
 
   /** Throws an appropriate {@link NullPointerException} if the given objects is {@code null}. */
   static <T> T checkNotNull(T obj) {
