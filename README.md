@@ -1,9 +1,47 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chandler/protobuf-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chandler/protobuf-java) 
+
 Protocol Buffers - Google's data interchange format
 ===================================================
 
 Copyright 2008 Google Inc.
 
 https://developers.google.com/protocol-buffers/
+
+protobuf-teavm
+--------
+
+This repository contains a modified version of protobuf-java 3.7.1 that
+compiles and runs successfully under [TeaVM](http://teavm.org/), a JavaScript
+compiler for Java bytecode. 
+
+The following modifications have been made for compatibility:
+ - Removed all references to sun.misc.Unsafe
+   - Unsafe was used to implement optional direct ByteBuffer optimizations
+     in the original library.
+ - Removed support for direct buffers in CodedInputStream
+ - Replaced WeakHashMap usage with regular HashMap
+   - WeakHashMap was used in protobuf enums to avoid permanently caching 
+     <Integer, EnumValueDescriptor> entries. This change shouldn't negatively
+     affect the majority of use cases where proto schemas are loaded and kept in
+     use for the lifetime of an application.
+ - Incorporated [ISO_8859_1](https://github.com/cjgriscom/protobuf-teavm/blob/master/java/core/src/main/java/org/apache/harmony/niochar/charset/ISO_8859_1.java) 
+   support from Apache Harmony
+   - As of writing, TeaVM only supports UTF-8 charset.  Protobuf-java requires ISO_8859_1
+     in its conversion of strings from byte arrays.
+
+Important considerations:
+  - The standard protoc 3.7.1 remains compatible with this library without modification.
+  - Protobuf-java appears to fail when ADVANCED or FULL optimizations are turned on in 
+    TeaVM. Optimization mode should not exceed SIMPLE.
+    
+protobuf-teavm is deployed to Maven Central.
+```xml
+<dependency>
+    <groupId>io.chandler</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>3.7.1-teavm1</version>
+</dependency>
+```
 
 Overview
 --------
