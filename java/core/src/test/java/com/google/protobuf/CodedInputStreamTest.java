@@ -68,53 +68,10 @@ public class CodedInputStreamTest extends TestCase {
         return CodedInputStream.newInstance(ByteBuffer.wrap(data));
       }
     },
-    NIO_DIRECT {
-      @Override
-      CodedInputStream newDecoder(byte[] data, int blockSize) {
-        ByteBuffer buffer = ByteBuffer.allocateDirect(data.length);
-        buffer.put(data);
-        buffer.flip();
-        return CodedInputStream.newInstance(buffer);
-      }
-    },
     STREAM {
       @Override
       CodedInputStream newDecoder(byte[] data, int blockSize) {
         return CodedInputStream.newInstance(new SmallBlockInputStream(data, blockSize));
-      }
-    },
-    ITER_DIRECT {
-      @Override
-      CodedInputStream newDecoder(byte[] data, int blockSize) {
-        if (blockSize > DEFAULT_BLOCK_SIZE) {
-          blockSize = DEFAULT_BLOCK_SIZE;
-        }
-        ArrayList<ByteBuffer> input = new ArrayList<ByteBuffer>();
-        for (int i = 0; i < data.length; i += blockSize) {
-          int rl = Math.min(blockSize, data.length - i);
-          ByteBuffer rb = ByteBuffer.allocateDirect(rl);
-          rb.put(data, i, rl);
-          rb.flip();
-          input.add(rb);
-        }
-        return CodedInputStream.newInstance(input);
-      }
-    },
-    STREAM_ITER_DIRECT {
-      @Override
-      CodedInputStream newDecoder(byte[] data, int blockSize) {
-        if (blockSize > DEFAULT_BLOCK_SIZE) {
-          blockSize = DEFAULT_BLOCK_SIZE;
-        }
-        ArrayList<ByteBuffer> input = new ArrayList<ByteBuffer>();
-        for (int i = 0; i < data.length; i += blockSize) {
-          int rl = Math.min(blockSize, data.length - i);
-          ByteBuffer rb = ByteBuffer.allocateDirect(rl);
-          rb.put(data, i, rl);
-          rb.flip();
-          input.add(rb);
-        }
-        return CodedInputStream.newInstance(new IterableByteBufferInputStream(input));
       }
     };
 
@@ -1087,9 +1044,7 @@ public class CodedInputStreamTest extends TestCase {
     byte[] data = byteArrayStream.toByteArray();
 
     for (InputType inputType : InputType.values()) {
-      if (inputType == InputType.STREAM
-          || inputType == InputType.STREAM_ITER_DIRECT
-          || inputType == InputType.ITER_DIRECT) {
+      if (inputType == InputType.STREAM) {
         // Aliasing doesn't apply to stream-backed CIS.
         continue;
       }

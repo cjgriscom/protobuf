@@ -145,49 +145,6 @@ public class CodedOutputStreamTest extends TestCase {
     }
   }
 
-  private static final class NioDirectCoder implements Coder {
-    private final int initialPosition;
-    private final CodedOutputStream stream;
-    private final ByteBuffer buffer;
-    private final boolean unsafe;
-
-    NioDirectCoder(int size, boolean unsafe) {
-      this(size, 0, unsafe);
-    }
-
-    NioDirectCoder(int size, int initialPosition, boolean unsafe) {
-      this.unsafe = unsafe;
-      this.initialPosition = initialPosition;
-      buffer = ByteBuffer.allocateDirect(size);
-      buffer.position(initialPosition);
-      stream =
-          unsafe
-              ? CodedOutputStream.newUnsafeInstance(buffer)
-              : CodedOutputStream.newSafeInstance(buffer);
-    }
-
-    @Override
-    public CodedOutputStream stream() {
-      return stream;
-    }
-
-    @Override
-    public byte[] toByteArray() {
-      ByteBuffer dup = buffer.duplicate();
-      dup.position(initialPosition);
-      dup.limit(buffer.position());
-
-      byte[] bytes = new byte[dup.remaining()];
-      dup.get(bytes);
-      return bytes;
-    }
-
-    @Override
-    public OutputType getOutputType() {
-      return unsafe ? OutputType.NIO_DIRECT_SAFE : OutputType.NIO_DIRECT_UNSAFE;
-    }
-  }
-
   private enum OutputType {
     ARRAY() {
       @Override
@@ -199,18 +156,6 @@ public class CodedOutputStreamTest extends TestCase {
       @Override
       Coder newCoder(int size) {
         return new NioHeapCoder(size);
-      }
-    },
-    NIO_DIRECT_SAFE() {
-      @Override
-      Coder newCoder(int size) {
-        return new NioDirectCoder(size, false);
-      }
-    },
-    NIO_DIRECT_UNSAFE() {
-      @Override
-      Coder newCoder(int size) {
-        return new NioDirectCoder(size, true);
       }
     },
     STREAM() {
@@ -591,9 +536,7 @@ public class CodedOutputStreamTest extends TestCase {
     for (OutputType outputType :
         new OutputType[] {
           OutputType.ARRAY,
-          OutputType.NIO_HEAP,
-          OutputType.NIO_DIRECT_SAFE,
-          OutputType.NIO_DIRECT_UNSAFE
+          OutputType.NIO_HEAP
         }) {
       for (int i = 0; i < 11; i++) {
         Coder coder = outputType.newCoder(i);
@@ -635,7 +578,7 @@ public class CodedOutputStreamTest extends TestCase {
     String value = "abc";
     for (Coder coder :
         new Coder[] {
-          new NioHeapCoder(10, 2), new NioDirectCoder(10, 2, false), new NioDirectCoder(10, 2, true)
+          new NioHeapCoder(10, 2)
         }) {
       coder.stream().writeStringNoTag(value);
       coder.stream().flush();

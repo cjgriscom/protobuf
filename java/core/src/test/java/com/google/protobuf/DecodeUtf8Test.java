@@ -2,7 +2,6 @@ package com.google.protobuf;
 
 import com.google.protobuf.Utf8.Processor;
 import com.google.protobuf.Utf8.SafeProcessor;
-import com.google.protobuf.Utf8.UnsafeProcessor;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ public class DecodeUtf8Test extends TestCase {
   private static Logger logger = Logger.getLogger(DecodeUtf8Test.class.getName());
 
   private static final Processor SAFE_PROCESSOR = new SafeProcessor();
-  private static final Processor UNSAFE_PROCESSOR = new UnsafeProcessor();
 
   public void testRoundTripAllValidChars() throws Exception {
     for (int i = Character.MIN_CODE_POINT; i < Character.MAX_CODE_POINT; i++) {
@@ -185,12 +183,6 @@ public class DecodeUtf8Test extends TestCase {
 
   private void assertInvalid(byte[] bytes) throws Exception {
     try {
-      UNSAFE_PROCESSOR.decodeUtf8(bytes, 0, bytes.length);
-      fail();
-    } catch (InvalidProtocolBufferException e) {
-      // Expected.
-    }
-    try {
       SAFE_PROCESSOR.decodeUtf8(bytes, 0, bytes.length);
       fail();
     } catch (InvalidProtocolBufferException e) {
@@ -200,12 +192,6 @@ public class DecodeUtf8Test extends TestCase {
     ByteBuffer direct = ByteBuffer.allocateDirect(bytes.length);
     direct.put(bytes);
     direct.flip();
-    try {
-      UNSAFE_PROCESSOR.decodeUtf8(direct, 0, bytes.length);
-      fail();
-    } catch (InvalidProtocolBufferException e) {
-      // Expected.
-    }
     try {
       SAFE_PROCESSOR.decodeUtf8(direct, 0, bytes.length);
       fail();
@@ -217,12 +203,6 @@ public class DecodeUtf8Test extends TestCase {
     heap.put(bytes);
     heap.flip();
     try {
-      UNSAFE_PROCESSOR.decodeUtf8(heap, 0, bytes.length);
-      fail();
-    } catch (InvalidProtocolBufferException e) {
-      // Expected.
-    }
-    try {
       SAFE_PROCESSOR.decodeUtf8(heap, 0, bytes.length);
       fail();
     } catch (InvalidProtocolBufferException e) {
@@ -231,12 +211,6 @@ public class DecodeUtf8Test extends TestCase {
   }
 
   private void assertInvalidSlice(byte[] bytes, int index, int size) throws Exception {
-    try {
-      UNSAFE_PROCESSOR.decodeUtf8(bytes, index, size);
-      fail();
-    } catch (ArrayIndexOutOfBoundsException e) {
-      // Expected.
-    }
     try {
       SAFE_PROCESSOR.decodeUtf8(bytes, index, size);
       fail();
@@ -248,12 +222,6 @@ public class DecodeUtf8Test extends TestCase {
     direct.put(bytes);
     direct.flip();
     try {
-      UNSAFE_PROCESSOR.decodeUtf8(direct, index, size);
-      fail();
-    } catch (ArrayIndexOutOfBoundsException e) {
-      // Expected.
-    }
-    try {
       SAFE_PROCESSOR.decodeUtf8(direct, index, size);
       fail();
     } catch (ArrayIndexOutOfBoundsException e) {
@@ -263,12 +231,6 @@ public class DecodeUtf8Test extends TestCase {
     ByteBuffer heap = ByteBuffer.allocate(bytes.length);
     heap.put(bytes);
     heap.flip();
-    try {
-      UNSAFE_PROCESSOR.decodeUtf8(heap, index, size);
-      fail();
-    } catch (ArrayIndexOutOfBoundsException e) {
-      // Expected.
-    }
     try {
       SAFE_PROCESSOR.decodeUtf8(heap, index, size);
       fail();
@@ -287,23 +249,17 @@ public class DecodeUtf8Test extends TestCase {
       size = bytes.length;
     }
     assertDecode(new String(bytes, index, size, Internal.UTF_8),
-        UNSAFE_PROCESSOR.decodeUtf8(bytes, index, size));
-    assertDecode(new String(bytes, index, size, Internal.UTF_8),
         SAFE_PROCESSOR.decodeUtf8(bytes, index, size));
 
     ByteBuffer direct = ByteBuffer.allocateDirect(bytes.length);
     direct.put(bytes);
     direct.flip();
     assertDecode(new String(bytes, index, size, Internal.UTF_8),
-        UNSAFE_PROCESSOR.decodeUtf8(direct, index, size));
-    assertDecode(new String(bytes, index, size, Internal.UTF_8),
         SAFE_PROCESSOR.decodeUtf8(direct, index, size));
 
     ByteBuffer heap = ByteBuffer.allocate(bytes.length);
     heap.put(bytes);
     heap.flip();
-    assertDecode(new String(bytes, index, size, Internal.UTF_8),
-        UNSAFE_PROCESSOR.decodeUtf8(heap, index, size));
     assertDecode(new String(bytes, index, size, Internal.UTF_8),
         SAFE_PROCESSOR.decodeUtf8(heap, index, size));
   }
