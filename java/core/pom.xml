@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.google.protobuf</groupId>
+    <groupId>io.chandler</groupId>
     <artifactId>protobuf-parent</artifactId>
-    <version>3.7.1-teavm</version>
+    <version>3.7.1-teavm1</version>
   </parent>
 
   <artifactId>protobuf-java</artifactId>
@@ -14,6 +14,7 @@
   <description>
     Core Protocol Buffers library. Protocol Buffers are a way of encoding structured data in an
     efficient yet extensible format.
+    This fork removes optimization features that cause incompatibility with the TeaVM runtime.
   </description>
 
   <dependencies>
@@ -145,8 +146,8 @@
         <configuration>
           <instructions>
             <Bundle-DocURL>https://developers.google.com/protocol-buffers/</Bundle-DocURL>
-            <Bundle-SymbolicName>com.google.protobuf</Bundle-SymbolicName>
-            <Export-Package>com.google.protobuf;version=${project.version}</Export-Package>
+            <Bundle-SymbolicName>io.chandler</Bundle-SymbolicName>
+            <Export-Package>io.chandler;version=${project.version}</Export-Package>
             <Import-Package>sun.misc;resolution:=optional,*</Import-Package>
           </instructions>
         </configuration>
