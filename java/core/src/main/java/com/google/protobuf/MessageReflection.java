@@ -534,10 +534,6 @@ class MessageReflection {
       if (descriptor.needsUtf8Check()) {
         return WireFormat.Utf8Validation.STRICT;
       }
-      // TODO(liujisi): support lazy strings for repeated fields.
-      if (!descriptor.isRepeated() && builder instanceof GeneratedMessage.Builder) {
-        return WireFormat.Utf8Validation.LAZY;
-      }
       return WireFormat.Utf8Validation.LOOSE;
     }
 

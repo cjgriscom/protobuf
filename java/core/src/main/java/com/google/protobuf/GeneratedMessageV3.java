@@ -30,30 +30,6 @@
 
 package com.google.protobuf;
 
-import static com.google.protobuf.Internal.checkNotNull;
-
-import com.google.protobuf.Descriptors.Descriptor;
-import com.google.protobuf.Descriptors.EnumDescriptor;
-import com.google.protobuf.Descriptors.EnumValueDescriptor;
-import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.Descriptors.FileDescriptor;
-import com.google.protobuf.Descriptors.OneofDescriptor;
-import com.google.protobuf.Internal.BooleanList;
-import com.google.protobuf.Internal.DoubleList;
-import com.google.protobuf.Internal.FloatList;
-import com.google.protobuf.Internal.IntList;
-import com.google.protobuf.Internal.LongList;
-// In opensource protobuf, we have versioned this GeneratedMessageV3 class to GeneratedMessageV3V3 and
-// in the future may have GeneratedMessageV3V4 etc. This allows us to change some aspects of this
-// class without breaking binary compatibility with old generated code that still subclasses
-// the old GeneratedMessageV3 class. To allow these different GeneratedMessageV3V? classes to
-// interoperate (e.g., a GeneratedMessageV3V3 object has a message extension field whose class
-// type is GeneratedMessageV3V4), these classes still share a common parent class AbstractMessage
-// and are using the same GeneratedMessage.GeneratedExtension class for extension definitions.
-// Since this class becomes GeneratedMessageV3V? in opensource, we have to add an import here
-// to be able to use GeneratedMessage.GeneratedExtension. The GeneratedExtension definition in
-// this file is also excluded from opensource to avoid conflict.
-import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectStreamException;
@@ -67,6 +43,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.EnumDescriptor;
+import com.google.protobuf.Descriptors.EnumValueDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.Descriptors.FileDescriptor;
+import com.google.protobuf.Descriptors.OneofDescriptor;
+// In opensource protobuf, we have versioned this GeneratedMessageV3 class to GeneratedMessageV3V3 and
+// in the future may have GeneratedMessageV3V4 etc. This allows us to change some aspects of this
+// class without breaking binary compatibility with old generated code that still subclasses
+// the old GeneratedMessageV3 class. To allow these different GeneratedMessageV3V? classes to
+// interoperate (e.g., a GeneratedMessageV3V3 object has a message extension field whose class
+// type is GeneratedMessageV3V4), these classes still share a common parent class AbstractMessage
+// and are using the same GeneratedMessage.GeneratedExtension class for extension definitions.
+// Since this class becomes GeneratedMessageV3V? in opensource, we have to add an import here
+// to be able to use GeneratedMessage.GeneratedExtension. The GeneratedExtension definition in
+// this file is also excluded from opensource to avoid conflict.
+import com.google.protobuf.GeneratedMessage.GeneratedExtension;
+import com.google.protobuf.Internal.BooleanList;
+import com.google.protobuf.Internal.DoubleList;
+import com.google.protobuf.Internal.FloatList;
+import com.google.protobuf.Internal.IntList;
+import com.google.protobuf.Internal.LongList;
 
 /**
  * All generated protocol message classes extend this class.  This class
@@ -982,39 +981,13 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
     /** Get the value of an extension. */
     @Override
     @SuppressWarnings("unchecked")
-    public final <Type> Type getExtension(final ExtensionLite<MessageType, Type> extensionLite) {
-      Extension<MessageType, Type> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      FieldDescriptor descriptor = extension.getDescriptor();
-      final Object value = extensions.getField(descriptor);
-      if (value == null) {
-        if (descriptor.isRepeated()) {
-          return (Type) Collections.emptyList();
-        } else if (descriptor.getJavaType() ==
-                   FieldDescriptor.JavaType.MESSAGE) {
-          return (Type) extension.getMessageDefaultInstance();
-        } else {
-          return (Type) extension.fromReflectionType(
-              descriptor.getDefaultValue());
-        }
-      } else {
-        return (Type) extension.fromReflectionType(value);
-      }
-    }
+    public final <Type> Type getExtension(final ExtensionLite<MessageType, Type> extensionLite) { return null; }
 
     /** Get one element of a repeated extension. */
     @Override
     @SuppressWarnings("unchecked")
     public final <Type> Type getExtension(
-        final ExtensionLite<MessageType, List<Type>> extensionLite, final int index) {
-      Extension<MessageType, List<Type>> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      FieldDescriptor descriptor = extension.getDescriptor();
-      return (Type) extension.singularFromReflectionType(
-          extensions.getRepeatedField(descriptor, index));
-    }
+        final ExtensionLite<MessageType, List<Type>> extensionLite, final int index) { return null; }
 
     /** Check if a singular extension is present. */
     @Override
@@ -1357,115 +1330,47 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
     @Override
     public final <Type> int getExtensionCount(
         final ExtensionLite<MessageType, List<Type>> extensionLite) {
-      Extension<MessageType, List<Type>> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      final FieldDescriptor descriptor = extension.getDescriptor();
-      return extensions.getRepeatedFieldCount(descriptor);
+      return 0;
     }
 
     /** Get the value of an extension. */
     @Override
-    public final <Type> Type getExtension(final ExtensionLite<MessageType, Type> extensionLite) {
-      Extension<MessageType, Type> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      FieldDescriptor descriptor = extension.getDescriptor();
-      final Object value = extensions.getField(descriptor);
-      if (value == null) {
-        if (descriptor.isRepeated()) {
-          return (Type) Collections.emptyList();
-        } else if (descriptor.getJavaType() ==
-                   FieldDescriptor.JavaType.MESSAGE) {
-          return (Type) extension.getMessageDefaultInstance();
-        } else {
-          return (Type) extension.fromReflectionType(
-              descriptor.getDefaultValue());
-        }
-      } else {
-        return (Type) extension.fromReflectionType(value);
-      }
-    }
+    public final <Type> Type getExtension(final ExtensionLite<MessageType, Type> extensionLite) { return null; }
 
     /** Get one element of a repeated extension. */
     @Override
     public final <Type> Type getExtension(
-        final ExtensionLite<MessageType, List<Type>> extensionLite, final int index) {
-      Extension<MessageType, List<Type>> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      FieldDescriptor descriptor = extension.getDescriptor();
-      return (Type) extension.singularFromReflectionType(
-          extensions.getRepeatedField(descriptor, index));
-    }
+        final ExtensionLite<MessageType, List<Type>> extensionLite, final int index) { return null; }
 
     /** Set the value of an extension. */
     public final <Type> BuilderType setExtension(
         final ExtensionLite<MessageType, Type> extensionLite,
-        final Type value) {
-      Extension<MessageType, Type> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      ensureExtensionsIsMutable();
-      final FieldDescriptor descriptor = extension.getDescriptor();
-      extensions.setField(descriptor, extension.toReflectionType(value));
-      onChanged();
-      return (BuilderType) this;
-    }
+        final Type value) { return (BuilderType) this; }
 
     /** Set the value of one element of a repeated extension. */
     public final <Type> BuilderType setExtension(
         final ExtensionLite<MessageType, List<Type>> extensionLite,
-        final int index, final Type value) {
-      Extension<MessageType, List<Type>> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      ensureExtensionsIsMutable();
-      final FieldDescriptor descriptor = extension.getDescriptor();
-      extensions.setRepeatedField(
-        descriptor, index,
-        extension.singularToReflectionType(value));
-      onChanged();
-      return (BuilderType) this;
-    }
+        final int index, final Type value) { return (BuilderType) this; }
 
     /** Append a value to a repeated extension. */
     public final <Type> BuilderType addExtension(
         final ExtensionLite<MessageType, List<Type>> extensionLite,
-        final Type value) {
-      Extension<MessageType, List<Type>> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      ensureExtensionsIsMutable();
-      final FieldDescriptor descriptor = extension.getDescriptor();
-      extensions.addRepeatedField(
-          descriptor, extension.singularToReflectionType(value));
-      onChanged();
-      return (BuilderType) this;
-    }
+        final Type value) { return (BuilderType) this; }
 
     /** Clear an extension. */
     public final <Type> BuilderType clearExtension(
-        final ExtensionLite<MessageType, ?> extensionLite) {
-      Extension<MessageType, ?> extension = checkNotLite(extensionLite);
-
-      verifyExtensionContainingType(extension);
-      ensureExtensionsIsMutable();
-      extensions.clearField(extension.getDescriptor());
-      onChanged();
-      return (BuilderType) this;
-    }
+        final ExtensionLite<MessageType, ?> extensionLite) { return (BuilderType) this; }
 
     /** Check if a singular extension is present. */
     @Override
     public final <Type> boolean hasExtension(final Extension<MessageType, Type> extension) {
-      return hasExtension((ExtensionLite<MessageType, Type>) extension);
+      return false;
     }
     /** Check if a singular extension is present. */
     @Override
     public final <Type> boolean hasExtension(
         final GeneratedExtension<MessageType, Type> extension) {
-      return hasExtension((ExtensionLite<MessageType, Type>) extension);
+      return false;
     }
     /** Get the number of elements in a repeated extension. */
     @Override
@@ -2762,7 +2667,7 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
    * @return a SerializedForm of this message
    */
   protected Object writeReplace() throws ObjectStreamException {
-    return new GeneratedMessageLite.SerializedForm(this);
+    return new SerializedForm(this);
   }
 
   /**

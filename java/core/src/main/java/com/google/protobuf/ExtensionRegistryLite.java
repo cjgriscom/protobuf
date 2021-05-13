@@ -30,10 +30,6 @@
 
 package com.google.protobuf;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Equivalent to {@link ExtensionRegistry} but supports only "lite" types.
  *
@@ -79,19 +75,6 @@ public class ExtensionRegistryLite {
   // Visible for testing.
   static final String EXTENSION_CLASS_NAME = "com.google.protobuf.Extension";
 
-  /* @Nullable */
-  static Class<?> resolveExtensionClass() {
-    try {
-      return Class.forName(EXTENSION_CLASS_NAME);
-    } catch (ClassNotFoundException e) {
-      // See comment in ExtensionRegistryFactory on the potential expense of this.
-      return null;
-    }
-  }
-
-  /* @Nullable */
-  private static final Class<?> extensionClass = resolveExtensionClass();
-
   public static boolean isEagerlyParseMessageSets() {
     return eagerlyParseMessageSets;
   }
@@ -107,7 +90,7 @@ public class ExtensionRegistryLite {
    * available.
    */
   public static ExtensionRegistryLite newInstance() {
-    return ExtensionRegistryFactory.create();
+    return EMPTY_REGISTRY_LITE;
   }
 
   /**
@@ -115,52 +98,20 @@ public class ExtensionRegistryLite {
    * ExtensionRegistry} (if the full (non-Lite) proto libraries are available).
    */
   public static ExtensionRegistryLite getEmptyRegistry() {
-    return ExtensionRegistryFactory.createEmpty();
+    return EMPTY_REGISTRY_LITE;
   }
 
 
   /** Returns an unmodifiable view of the registry. */
   public ExtensionRegistryLite getUnmodifiable() {
-    return new ExtensionRegistryLite(this);
-  }
-
-  /**
-   * Find an extension by containing type and field number.
-   *
-   * @return Information about the extension if found, or {@code null} otherwise.
-   */
-  @SuppressWarnings("unchecked")
-  public <ContainingType extends MessageLite>
-      GeneratedMessageLite.GeneratedExtension<ContainingType, ?> findLiteExtensionByNumber(
-          final ContainingType containingTypeDefaultInstance, final int fieldNumber) {
-    return (GeneratedMessageLite.GeneratedExtension<ContainingType, ?>)
-        extensionsByNumber.get(new ObjectIntPair(containingTypeDefaultInstance, fieldNumber));
-  }
-
-  /** Add an extension from a lite generated file to the registry. */
-  public final void add(final GeneratedMessageLite.GeneratedExtension<?, ?> extension) {
-    extensionsByNumber.put(
-        new ObjectIntPair(extension.getContainingTypeDefaultInstance(), extension.getNumber()),
-        extension);
+    return EMPTY_REGISTRY_LITE;
   }
 
   /**
    * Add an extension from a lite generated file to the registry only if it is a non-lite extension
    * i.e. {@link GeneratedMessageLite.GeneratedExtension}.
    */
-  public final void add(ExtensionLite<?, ?> extension) {
-    if (GeneratedMessageLite.GeneratedExtension.class.isAssignableFrom(extension.getClass())) {
-      add((GeneratedMessageLite.GeneratedExtension<?, ?>) extension);
-    }
-    if (ExtensionRegistryFactory.isFullRegistry(this)) {
-      try {
-        this.getClass().getMethod("add", extensionClass).invoke(this, extension);
-      } catch (Exception e) {
-        throw new IllegalArgumentException(
-            String.format("Could not invoke ExtensionRegistry#add for %s", extension), e);
-      }
-    }
-  }
+  public final void add(ExtensionLite<?, ?> extension) { }
 
   // =================================================================
   // Private stuff.
@@ -168,50 +119,8 @@ public class ExtensionRegistryLite {
   // Constructors are package-private so that ExtensionRegistry can subclass
   // this.
 
-  ExtensionRegistryLite() {
-    this.extensionsByNumber =
-        new HashMap<ObjectIntPair, GeneratedMessageLite.GeneratedExtension<?, ?>>();
-  }
-
   static final ExtensionRegistryLite EMPTY_REGISTRY_LITE = new ExtensionRegistryLite(true);
 
-  ExtensionRegistryLite(ExtensionRegistryLite other) {
-    if (other == EMPTY_REGISTRY_LITE) {
-      this.extensionsByNumber = Collections.emptyMap();
-    } else {
-      this.extensionsByNumber = Collections.unmodifiableMap(other.extensionsByNumber);
-    }
-  }
+  ExtensionRegistryLite(boolean empty) {}
 
-  private final Map<ObjectIntPair, GeneratedMessageLite.GeneratedExtension<?, ?>>
-      extensionsByNumber;
-
-  ExtensionRegistryLite(boolean empty) {
-    this.extensionsByNumber = Collections.emptyMap();
-  }
-
-  /** A (Object, int) pair, used as a map key. */
-  private static final class ObjectIntPair {
-    private final Object object;
-    private final int number;
-
-    ObjectIntPair(final Object object, final int number) {
-      this.object = object;
-      this.number = number;
-    }
-
-    @Override
-    public int hashCode() {
-      return System.identityHashCode(object) * ((1 << 16) - 1) + number;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-      if (!(obj instanceof ObjectIntPair)) {
-        return false;
-      }
-      final ObjectIntPair other = (ObjectIntPair) obj;
-      return object == other.object && number == other.number;
-    }
-  }
 }

@@ -71,12 +71,4 @@ public abstract class Extension<ContainingType extends MessageLite, Type>
   public MessageType getMessageType() {
     return MessageType.PROTO2;
   }
-
-  protected abstract Object fromReflectionType(Object value);
-
-  protected abstract Object singularFromReflectionType(Object value);
-
-  protected abstract Object toReflectionType(Object value);
-
-  protected abstract Object singularToReflectionType(Object value);
 }
