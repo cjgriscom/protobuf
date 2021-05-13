@@ -56,7 +56,6 @@ import java.util.logging.Logger;
  * <p>This class is totally unsynchronized.
  */
 public abstract class CodedOutputStream extends ByteOutput {
-  private static final Logger logger = Logger.getLogger(CodedOutputStream.class.getName());
   
   /** @deprecated Use {@link #computeFixed32SizeNoTag(int)} instead. */
   @Deprecated public static final int LITTLE_ENDIAN_32_SIZE = FIXED32_SIZE;
@@ -950,10 +949,6 @@ public abstract class CodedOutputStream extends ByteOutput {
 
   final void inefficientWriteStringNoTag(String value, UnpairedSurrogateException cause)
       throws IOException {
-    logger.log(
-        Level.WARNING,
-        "Converting ill-formed UTF-16. Your Protocol Buffer will not round trip correctly!",
-        cause);
 
     // Unfortunately there does not appear to be any way to tell Java to encode
     // UTF-8 directly into our buffer, so we have to let it create its own byte
