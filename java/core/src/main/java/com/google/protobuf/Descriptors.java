@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
 import com.google.protobuf.DescriptorProtos.EnumDescriptorProto;
@@ -78,7 +77,6 @@ import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
  * @author kenton@google.com Kenton Varda
  */
 public final class Descriptors {
-  private static final Logger logger = Logger.getLogger(Descriptors.class.getName());
   /**
    * Describes a {@code .proto} file, including everything defined within. That includes, in
    * particular, descriptors for all the messages and file descriptors for all other imported {@code
@@ -2278,10 +2276,6 @@ public final class Descriptors {
 
       if (result == null) {
         if (allowUnknownDependencies && filter == SearchFilter.TYPES_ONLY) {
-          logger.warning(
-              "The descriptor for message type \""
-                  + name
-                  + "\" can not be found and a placeholder is created for it");
           // We create a dummy message descriptor here regardless of the
           // expected type. If the type should be message, this dummy
           // descriptor will work well and if the type should be enum, a

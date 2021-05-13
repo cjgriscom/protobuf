@@ -113,7 +113,7 @@ public abstract class AbstractMessageLite<
 
   private String getSerializingExceptionMessage(String target) {
     return "Serializing "
-        + getClass().getName()
+            + "(message)"
         + " to a "
         + target
         + " threw an IOException (should never happen).";
@@ -338,7 +338,7 @@ public abstract class AbstractMessageLite<
 
     private String getReadingExceptionMessage(String target) {
       return "Reading "
-          + getClass().getName()
+          + "(message)"
           + " from a "
           + target
           + " threw an IOException (should never happen).";

@@ -30,10 +30,6 @@
 
 package com.google.protobuf;
 
-import com.google.protobuf.Descriptors.Descriptor;
-import com.google.protobuf.Descriptors.EnumDescriptor;
-import com.google.protobuf.Descriptors.EnumValueDescriptor;
-import com.google.protobuf.Descriptors.FieldDescriptor;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.CharBuffer;
@@ -41,9 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.EnumDescriptor;
+import com.google.protobuf.Descriptors.EnumValueDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 /**
  * Provide text parsing and formatting support for proto2 instances. The implementation largely
@@ -54,8 +54,6 @@ import java.util.regex.Pattern;
  */
 public final class TextFormat {
   private TextFormat() {}
-
-  private static final Logger logger = Logger.getLogger(TextFormat.class.getName());
 
   /**
    * Outputs a textual representation of the Protocol Message supplied into the parameter output.
@@ -1328,7 +1326,6 @@ public final class TextFormat {
       }
 
       if (allowUnknownFields) {
-        logger.warning(msg.toString());
         return;
       }
 
@@ -1343,7 +1340,6 @@ public final class TextFormat {
           ++firstErrorIndex;
         }
         if (allUnknownExtensions) {
-          logger.warning(msg.toString());
           return;
         }
       }
@@ -1696,7 +1692,6 @@ public final class TextFormat {
                         + number
                         + '.';
                 if (allowUnknownEnumValues) {
-                  logger.warning(unknownValueMsg);
                   return;
                 } else {
                   throw tokenizer.parseExceptionPreviousToken(
@@ -1718,7 +1713,6 @@ public final class TextFormat {
                         + id
                         + "\".";
                 if (allowUnknownEnumValues) {
-                  logger.warning(unknownValueMsg);
                   return;
                 } else {
                   throw tokenizer.parseExceptionPreviousToken(unknownValueMsg);

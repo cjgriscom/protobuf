@@ -817,7 +817,7 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
       // Note that we can't use descriptor names here because this method will
       // be called when descriptor is being initialized.
       throw new RuntimeException(
-          "No map fields found in " + getClass().getName());
+          "No map fields found in (class)");
     }
 
     /** Like {@link #internalGetMapField} but return a mutable version. */
@@ -826,7 +826,7 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
       // Note that we can't use descriptor names here because this method will
       // be called when descriptor is being initialized.
       throw new RuntimeException(
-          "No map fields found in " + getClass().getName());
+          "No map fields found in (class)");
     }
   }
 
@@ -1633,7 +1633,7 @@ public abstract class GeneratedMessageV3 extends AbstractMessage
     // Note that we can't use descriptor names here because this method will
     // be called when descriptor is being initialized.
     throw new RuntimeException(
-        "No map fields found in " + getClass().getName());
+        "No map fields found in (class)");
   }
 
   /**

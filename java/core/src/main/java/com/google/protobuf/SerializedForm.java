@@ -17,8 +17,6 @@ import java.io.Serializable;
 
     // since v3.6.1
     private final Class<?> messageClass;
-    // only included for backwards compatibility before messageClass was added
-    private final String messageClassName;
     private final byte[] asBytes;
 
     /**
@@ -28,7 +26,6 @@ import java.io.Serializable;
      */
     SerializedForm(MessageLite regularForm) {
       messageClass = regularForm.getClass();
-      messageClassName = messageClass.getName();
       asBytes = regularForm.toByteArray();
     }
 
@@ -48,11 +45,11 @@ import java.io.Serializable;
         MessageLite defaultInstance = (MessageLite) defaultInstanceField.get(null);
         return defaultInstance.newBuilderForType().mergeFrom(asBytes).buildPartial();
       } catch (ClassNotFoundException e) {
-        throw new RuntimeException("Unable to find proto buffer class: " + messageClassName, e);
+        throw new RuntimeException("Unable to find proto buffer class", e);
       } catch (NoSuchFieldException e) {
         return readResolveFallback();
       } catch (SecurityException e) {
-        throw new RuntimeException("Unable to call DEFAULT_INSTANCE in " + messageClassName, e);
+        throw new RuntimeException("Unable to call DEFAULT_INSTANCE in (class)", e);
       } catch (IllegalAccessException e) {
         throw new RuntimeException("Unable to call parsePartialFrom", e);
       } catch (InvalidProtocolBufferException e) {
@@ -75,11 +72,11 @@ import java.io.Serializable;
             .mergeFrom(asBytes)
             .buildPartial();
       } catch (ClassNotFoundException e) {
-        throw new RuntimeException("Unable to find proto buffer class: " + messageClassName, e);
+        throw new RuntimeException("Unable to find proto buffer class", e);
       } catch (NoSuchFieldException e) {
-        throw new RuntimeException("Unable to find defaultInstance in " + messageClassName, e);
+        throw new RuntimeException("Unable to find defaultInstance in (class)", e);
       } catch (SecurityException e) {
-        throw new RuntimeException("Unable to call defaultInstance in " + messageClassName, e);
+        throw new RuntimeException("Unable to call defaultInstance in (class)", e);
       } catch (IllegalAccessException e) {
         throw new RuntimeException("Unable to call parsePartialFrom", e);
       } catch (InvalidProtocolBufferException e) {
@@ -88,6 +85,6 @@ import java.io.Serializable;
     }
 
     private Class<?> resolveMessageClass() throws ClassNotFoundException {
-      return messageClass != null ? messageClass : Class.forName(messageClassName);
+      return messageClass;
     }
   }
