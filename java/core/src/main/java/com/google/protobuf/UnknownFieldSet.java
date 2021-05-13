@@ -139,7 +139,7 @@ public final class UnknownFieldSet implements MessageLite {
    */
   @Override
   public String toString() {
-    return TextFormat.printToString(this);
+    return "(protobuf message)";
   }
 
   /**
