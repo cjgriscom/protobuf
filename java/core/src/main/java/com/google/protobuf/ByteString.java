@@ -111,8 +111,7 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
   private static final ByteArrayCopier byteArrayCopier;
 
   static {
-    byteArrayCopier =
-        Android.isOnAndroidDevice() ? new SystemByteArrayCopier() : new ArraysByteArrayCopier();
+    byteArrayCopier = new ArraysByteArrayCopier();
   }
 
   /**

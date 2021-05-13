@@ -30,7 +30,6 @@
 
 package com.google.protobuf;
 
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -362,14 +361,8 @@ public final class Internal {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static <T extends MessageLite> T getDefaultInstance(Class<T> clazz) {
-    try {
-      Method method = clazz.getMethod("getDefaultInstance");
-      return (T) method.invoke(method);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to get default instance for " + clazz, e);
-    }
+    throw new RuntimeException("Reflection not supported");
   }
 
 
