@@ -380,20 +380,7 @@ public final class Descriptors {
         final String[] dependencies,
         final String[] dependencyFileNames,
         final InternalDescriptorAssigner descriptorAssigner) {
-      List<FileDescriptor> descriptors = new ArrayList<FileDescriptor>();
-      for (int i = 0; i < dependencies.length; i++) {
-        try {
-          Class<?> clazz = descriptorOuterClass.getClassLoader().loadClass(dependencies[i]);
-          descriptors.add((FileDescriptor) clazz.getField("descriptor").get(null));
-        } catch (Exception e) {
-          // We allow unknown dependencies by default. If a dependency cannot
-          // be found we only generate a warning.
-          logger.warning("Descriptors for \"" + dependencyFileNames[i] + "\" can not be found.");
-        }
-      }
-      FileDescriptor[] descriptorArray = new FileDescriptor[descriptors.size()];
-      descriptors.toArray(descriptorArray);
-      internalBuildGeneratedFileFrom(descriptorDataParts, descriptorArray, descriptorAssigner);
+      throw new RuntimeException("Reflection not supported");
     }
 
     /**
