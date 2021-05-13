@@ -100,16 +100,6 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
     byte[] copyFrom(byte[] bytes, int offset, int size);
   }
 
-  /** Implementation of {@code ByteArrayCopier} which uses {@link System#arraycopy}. */
-  private static final class SystemByteArrayCopier implements ByteArrayCopier {
-    @Override
-    public byte[] copyFrom(byte[] bytes, int offset, int size) {
-      byte[] copy = new byte[size];
-      System.arraycopy(bytes, offset, copy, 0, size);
-      return copy;
-    }
-  }
-
   /** Implementation of {@code ByteArrayCopier} which uses {@link Arrays#copyOfRange}. */
   private static final class ArraysByteArrayCopier implements ByteArrayCopier {
     @Override
