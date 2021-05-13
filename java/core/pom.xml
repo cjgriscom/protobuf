@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.chandler</groupId>
     <artifactId>protobuf-parent</artifactId>
-    <version>3.7.1-teavm1</version>
+    <version>3.7.1-teavm2</version>
   </parent>
 
   <artifactId>protobuf-java</artifactId>
